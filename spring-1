@@ -1,0 +1,119 @@
+login.html
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Welcome</title>
+    </head>
+    <body>
+        <h1>Hello ${username}</h1>
+    </body>
+</html>
+user.jsp
+<%--
+    Document   : user
+    Created on : 28 Nov, 2024, 10:45:25 AM
+    Author     : ADMIN
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h2>Login Page</h2>
+    <form action="login.htm" >
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+       
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+       
+        <button type="submit" value="sumbit">Submit</button>
+    </form>
+    </body>
+</html>
+redirect.jsp
+<%--
+Views should be stored under the WEB-INF folder so that
+they are not accessible except through controller process.
+
+This JSP is here to provide a redirect to the dispatcher
+servlet but should be the only JSP outside of WEB-INF.
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% response.sendRedirect("user.htm"); %>
+UserController.java
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package New;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+/**
+ *
+ * @author ADMIN
+ */
+public class UserController extends AbstractController {
+   
+    public UserController() {
+    }
+   
+    protected ModelAndView handleRequestInternal(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+       
+            ModelAndView mav=new ModelAndView();
+        mav.setViewName("user");
+        return mav;
+               
+       
+    }
+   
+}
+LoginController
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package New;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+/**
+ *
+ * @author ADMIN
+ */
+public class loginController extends AbstractController {
+   
+    public loginController() {
+    }
+   
+    protected ModelAndView handleRequestInternal(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+       ModelAndView mav=new ModelAndView();
+        String username=request.getParameter("username");
+            mav.addObject("username",username);
+            mav.setViewName("login");
+            return mav;
+       
+       
+
+    }
+   
+}
