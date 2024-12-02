@@ -1,0 +1,56 @@
+import React, { useState } from "react";
+
+function App() {
+  const [op, setOp] = useState(""); // State for the expression
+  const [result, setResult] = useState(""); // State for the result
+
+  const calculate = () => {
+    try {
+      setResult(eval(op)); // Evaluate the expression
+    } catch (error) {
+      setResult("Error"); // Handle invalid expressions
+    }
+  };
+
+  const handleClick = (value) => {
+    setOp(op + value); // Append clicked value to the expression
+  };
+
+  const clear = () => {
+    setOp(""); // Clear the expression
+    setResult(""); // Clear the result
+  };
+
+  return (
+    <div>
+      <h1>Simple Calculator</h1>
+      <div>
+        <input type="text" value={op} readOnly />
+        <input type="text" value={result} readOnly />
+      </div>
+      <div>
+        <button onClick={() => handleClick("1")}>1</button>
+        <button onClick={() => handleClick("2")}>2</button>
+        <button onClick={() => handleClick("3")}>3</button>
+        <button onClick={() => handleClick("+")}>+</button>
+        <br />
+        <button onClick={() => handleClick("4")}>4</button>
+        <button onClick={() => handleClick("5")}>5</button>
+        <button onClick={() => handleClick("6")}>6</button>
+        <button onClick={() => handleClick("-")}>-</button>
+        <br />
+        <button onClick={() => handleClick("7")}>7</button>
+        <button onClick={() => handleClick("8")}>8</button>
+        <button onClick={() => handleClick("9")}>9</button>
+        <button onClick={() => handleClick("*")}>*</button>
+        <br />
+        <button onClick={clear}>C</button>
+        <button onClick={() => handleClick("0")}>0</button>
+        <button onClick={calculate}>=</button>
+        <button onClick={() => handleClick("/")}>/</button>
+      </div>
+    </div>
+  );
+}
+
+export default App;
