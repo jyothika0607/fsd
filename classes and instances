@@ -1,0 +1,45 @@
+app.js
+import React, { Component } from 'react';
+import Greeting from './Greeting';
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: 'Jyothika',
+      greeting: 'Hello',
+    };
+  }
+
+  changeGreeting = () => {
+    this.setState({ greeting: this.state.greeting === 'Hello' ? 'Hi' : 'Hello' });
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>React Class Component Demo</h1>
+        <Greeting name={this.state.name} greeting={this.state.greeting} />
+        <button onClick={this.changeGreeting}>Change Greeting</button>
+      </div>
+    );
+  }
+}
+
+export default App;
+greetings.js
+
+import React, { Component } from 'react';
+
+class Greeting extends Component {
+  render() {
+    const { name, greeting } = this.props;
+    return (
+      <div>
+        <p>{greeting}, {name}!</p>
+      </div>
+    );
+  }
+}
+
+export default Greeting;
