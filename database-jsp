@@ -1,0 +1,80 @@
+validate.jsp
+<%@ page import="java.sql.*" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Validate Page</title>
+    </head>
+    <body>
+        <h1>Login Validation</h1>
+        <div>
+            <% 
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+
+                String dbURL = "jdbc:mysql://localhost:3306/bhanu";
+                String dbUser = "root";  // Your DB username
+                String dbPass = "password";  // Your DB password
+
+                try {
+                    // Load the MySQL JDBC Driver
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+
+                    // Establish a connection to the database
+                    Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+
+                    // Create the SQL query dynamically
+                    String sql = "SELECT * FROM student WHERE username='" + username + "' AND password='" + password + "'";
+                    Statement stmt = conn.createStatement();
+
+                    // Execute the query
+                    ResultSet rs = stmt.executeQuery(sql);
+
+                    // Check if user exists
+                    if (rs.next()) {
+                        out.println("<h1>Hii "+username+"</h1>");
+                        out.println("<h2>Login Successful</h2>");
+                    } else {
+                        out.println("<h2>Login Failed. Invalid Username or Password.</h2>");
+                    }
+
+                    // Close the connection
+                    conn.close();
+                } catch (Exception e) {
+                    out.println("<h2>Error: " + e.getMessage() + "</h2>");
+                    e.printStackTrace();
+                }
+            %>
+        </div>
+    </body>
+</html>
+
+
+login.jsp
+<%-- 
+    Document   : login.jsp
+    Created on : 28 Nov, 2024, 2:30:51 PM
+    Author     : hp
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>login Page</title>
+    </head>
+    <body>
+        <h1><!DOCTYPE html>
+    <h2>Login Form</h2>
+    <form action="validate.jsp" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+    </body>
+</html>
