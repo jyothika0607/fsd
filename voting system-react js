@@ -1,0 +1,65 @@
+app.js
+import React from 'react';
+import Voting from './Voting';
+
+function App() {
+  return (
+    <div>
+      <Voting />
+    </div>
+  );
+}
+
+export default App;
+
+
+voting.js
+
+
+import React, { useState } from 'react';
+
+const Voting = () => {
+  const [votes, setVotes] = useState({ Movie1: 0, Movie2: 0 });
+
+  const incrementVote = (category) => {
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [category]: prevVotes[category] + 1,
+    }));
+  };
+
+  const decrementVote = (category) => {
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [category]: Math.max(0, prevVotes[category] - 1),
+    }));
+  };
+
+  const findMostVoted = () => {
+    const maxVotes = Math.max(...Object.values(votes));
+    const mostVotedCategories = Object.entries(votes)
+      .filter(([_, voteCount]) => voteCount === maxVotes)
+      .map(([category]) => category)
+      .join(', ');
+
+    return mostVotedCategories || 'No votes yet';
+  };
+
+  return (
+    <div>
+      <h2>Vote for Your Favorite Movie!</h2>
+      {Object.entries(votes).map(([category, count]) => (
+        <div key={category}>
+          <h3>{category}</h3>
+          <p>Votes: {count}</p>
+          <button onClick={() => incrementVote(category)}>Vote Up</button>
+          <button onClick={() => decrementVote(category)}>Vote Down</button>
+        </div>
+      ))}
+      <h3>Most Voted: {findMostVoted()}</h3>
+    </div>
+  );
+};
+
+export default Voting;
+
