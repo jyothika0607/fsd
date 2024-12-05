@@ -1,11 +1,46 @@
-app.js
-import React from 'react';
-import Voting from './Voting';
+import React, { useState } from 'react';
+import './App.css';
 
 function App() {
+  const [votes, setVotes] = useState({ candidate1: 0, candidate2: 0 });
+  const [winner, setWinner] = useState(null);
+  const [majority, setMajority] = useState(null);
+
+  const handleVote = (candidate) => {
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [candidate]: prevVotes[candidate] + 1,
+    }));
+  };
+
+  const handleSubmit = () => {
+    const { candidate1, candidate2 } = votes;
+    if (candidate1 > candidate2) {
+      setWinner('Candidate 1');
+      setMajority(candidate1 - candidate2);
+    } else if (candidate2 > candidate1) {
+      setWinner('Candidate 2');
+      setMajority(candidate2 - candidate1);
+    } else {
+      setWinner('It\'s a tie');
+      setMajority(0);
+    }
+  };
+
   return (
-    <div>
-      <Voting />
+    <div className="App">
+      <h1>Voting Application</h1>
+      <div>
+        <button onClick={() => handleVote('candidate1')}>👩🏻 Candidate 1</button>
+        <button onClick={() => handleVote('candidate2')}>👩🏻‍🦰 Candidate 2</button>
+      </div>
+      <button onClick={handleSubmit}>Submit</button>
+      {winner && (
+        <div>
+          <h2>Winner: {winner}</h2>
+          <p>Majority: {majority}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -13,53 +48,51 @@ function App() {
 export default App;
 
 
-voting.js
+
+App.css
 
 
-import React, { useState } from 'react';
 
-const Voting = () => {
-  const [votes, setVotes] = useState({ Movie1: 0, Movie2: 0 });
+.App {
+  text-align: center;
+  height: 100vh;
+  background-color: rgb(130, 212, 212);
+}
 
-  const incrementVote = (category) => {
-    setVotes((prevVotes) => ({
-      ...prevVotes,
-      [category]: prevVotes[category] + 1,
-    }));
-  };
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
 
-  const decrementVote = (category) => {
-    setVotes((prevVotes) => ({
-      ...prevVotes,
-      [category]: Math.max(0, prevVotes[category] - 1),
-    }));
-  };
+h2 {
+  color: green;
+}
 
-  const findMostVoted = () => {
-    const maxVotes = Math.max(...Object.values(votes));
-    const mostVotedCategories = Object.entries(votes)
-      .filter(([_, voteCount]) => voteCount === maxVotes)
-      .map(([category]) => category)
-      .join(', ');
 
-    return mostVotedCategories || 'No votes yet';
-  };
 
-  return (
-    <div>
-      <h2>Vote for Your Favorite Movie!</h2>
-      {Object.entries(votes).map(([category, count]) => (
-        <div key={category}>
-          <h3>{category}</h3>
-          <p>Votes: {count}</p>
-          <button onClick={() => incrementVote(category)}>Vote Up</button>
-          <button onClick={() => decrementVote(category)}>Vote Down</button>
-        </div>
-      ))}
-      <h3>Most Voted: {findMostVoted()}</h3>
-    </div>
-  );
-};
+index.js
 
-export default Voting;
+
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import './App.css' 
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+
+
 
